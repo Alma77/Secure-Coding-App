@@ -1,0 +1,11 @@
+##echo "Switching to branch master"
+##git checkout master
+
+echo "Building app"
+npm run build
+
+echo "Deploying files to server"
+rsync -avP build/ root@66.175.220.118:/var/www/securecoding.com/
+echo "Deployment complete"
+
+

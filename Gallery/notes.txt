@@ -1,0 +1,2 @@
+Postgres Databases no longer work. Saying that there is no more space to write on docker logs. Can no longer connect to Postgresql running as service. Connected then tried to create new user and whole thing crashed and no longer accepts connections.
+Need to get Postgres database running as a service create users and databases for App database and WGAdmin database then get WGAdminAPI running as a service to connect to them.
