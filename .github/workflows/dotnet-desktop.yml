@@ -112,5 +112,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
+    - name: Restart
     - run: cd /var/repos/Secure-Coding-Project/Gallery
     - run: docker-compose restart swag -d
