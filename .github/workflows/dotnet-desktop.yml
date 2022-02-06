@@ -47,14 +47,14 @@ on:
 jobs:
 
   Build-WGAdminAPI:
-
     runs-on: self-hosted
 
     steps:
     - name: Stop WGAdminAPI Service
       run: sudo sytemctl stop WGAdminAPI
 
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v3
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
@@ -74,7 +74,8 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: Use Node.js 14.x
       uses: actions/setup-node@v2
       with:        
@@ -88,7 +89,9 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v3
+
     - name: Build Docker Image
     - run: cd /var/repos/Securing-Coding-Project/Gallery
     - run: docker build -t secure-coding-app.
