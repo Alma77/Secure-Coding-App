@@ -82,6 +82,7 @@ jobs:
       with:        
         node-version: 14.x
         cache: 'npm'
+    - name: Rebuild
       run: |
         cd /var/repos/Secure-Coding-Project/WGAdmin
         npm ci
@@ -103,3 +104,12 @@ jobs:
       run: |
         docker-compose stop secure-coding-app
         docker-compose start secure-coding-app -d
+
+  Restart-Swag:
+    runs-on: self-hosted
+
+    steps:
+    - name: Restart
+      run: |
+        cd /var/repos/Secure-Coding-Project/Gallery
+        docker-compose restart swag -d
