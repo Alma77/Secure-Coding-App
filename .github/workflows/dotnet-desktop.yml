@@ -48,25 +48,18 @@ jobs:
 
   Build-WGAdminAPI:
 
-    strategy:
-      matrix:
-        configuration: [Release]
-
     runs-on: self-hosted
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+    - name: Stop WGAdminAPI Service
+      run: sudo sytemctl stop WGAdminAPI
+
+    - uses: actions/checkout@v2
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-
-    - name: Stop WGAdminAPI Service
-      run: sudo sytemctl stop WGAdminAPI
 
     - name: RePublish WGAdminAPI
       run: |
@@ -79,10 +72,6 @@ jobs:
 
   Build-WGAdmin: 
     runs-on: self-hosted
-
-    strategy:
-        matrix:
-            node-version: [14.x]
 
     steps:
     - uses: actions/checkout@v2
