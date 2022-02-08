@@ -19,7 +19,7 @@ namespace WGAdminAPI.Services
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    UseShellExecute = true,
+                    UseShellExecute = false,
                     UserName = "root"
                 }
             };
