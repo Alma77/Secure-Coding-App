@@ -8,13 +8,13 @@ const WGStatus = () => {
     useEffect(() => {
         const response = GetWireGuardStatus();
 
-        setWGStatus(response)
+        setWGStatus(response.data)
     },[])
 
     const WGResetHandler = () => {
         const response = ResetWireGuard()
 
-        setWGStatus(response)
+        setWGStatus(response.data)
     }
 
     return(
