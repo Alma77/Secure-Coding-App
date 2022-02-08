@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using WGAdminAPI.Services;
 
 namespace WGAdminAPI.Controllers
 {
@@ -10,29 +11,11 @@ namespace WGAdminAPI.Controllers
     public class AdminController : ControllerBase
     {
         [HttpGet("status")]
-        public string GetWGAdminStatus()
+        public Task<string> GetWGAdminStatus()
         {
-            var process = new Process()
-            {
-                StartInfo = new ProcessStartInfo()
-                {
-                    FileName = "sysStatus.sh",
-                    Arguments = string.Empty,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true,
-                    //WorkingDirectory = "C:\\repos\\WGAdminAPI\\WGAdminAPI\\"
-                }
-            };
-
-            process.Start();
-
-            string output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
+            var output = "sudo systemctl status wg-quick@wg0".Bash();
 
             return output;
-
         }
 
         [HttpGet("reset")]
