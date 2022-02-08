@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
     "",
+    "\\.github",
+    "\\.github\\workflows",
     "\\WGAdminAPI",
     "\\WGAdminAPI\\WGAdminAPI",
     "\\WGAdminAPI\\WGAdminAPI\\Controllers",

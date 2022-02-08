@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace WGAdminAPI.Services
 {
-    public static class ShellHelpercs
+    public static class ShellHelper
     {
         public static Task<string> Bash(this string cmd)
         {

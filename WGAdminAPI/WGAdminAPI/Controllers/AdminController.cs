@@ -18,5 +18,15 @@ namespace WGAdminAPI.Controllers
             return output;
         }
 
+<<<<<<< HEAD
+=======
+        [HttpGet("reset")]
+        public Task<string> ResetAdmin()
+        {
+            var output = "sudo systemctl restart wg-quick@wg0".Bash();
+
+            return output;
+        }
+>>>>>>> 4a259bce62d7aa6ca93f2ebfd8b63978b611d325
     }
 }
