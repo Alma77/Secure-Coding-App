@@ -18,8 +18,6 @@ namespace WGAdminAPI.Controllers
             return output;
         }
 
-<<<<<<< HEAD
-=======
         [HttpGet("reset")]
         public Task<string> ResetAdmin()
         {
@@ -29,6 +27,6 @@ namespace WGAdminAPI.Controllers
 
             return output;
         }
->>>>>>> 4a259bce62d7aa6ca93f2ebfd8b63978b611d325
+
     }
 }
