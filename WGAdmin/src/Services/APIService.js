@@ -21,3 +21,8 @@ export const GetWireGuardStatus = async () => {
     const response = await axios.get(baseURL + "/Admin/status", header);
     return response.data;
 }
+
+export const ResetWireGuard = async () => {
+    const response = await axios.get(baseURL + "/Admin/reset", header);
+    return response.data;
+}

@@ -10,7 +10,6 @@ function App() {
         <h1 className='py-5'>WireGuard Admin</h1>
         <ClientForm />
         <WGStatus />
-        <button onClick={() => WGResetHandler} className="btn btn-secondary">Reset Wireguard</button>
       </header>
     </div>
   );

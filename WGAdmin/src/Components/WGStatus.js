@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GetWireGuardStatus } from "../Services/APIService";
+import { GetWireGuardStatus, ResetWireGuard } from "../Services/APIService";
 
 const WGStatus = () => {
 
@@ -11,10 +11,19 @@ const WGStatus = () => {
         setWGStatus(response)
     },[])
 
+    const WGResetHandler = () => {
+        const response = ResetWireGuard()
+
+        setWGStatus(response)
+    }
+
     return(
-        <div className="py-5">
-            {wgStatus}
-        </div>
+        <>
+            <div className="py-5">
+                {wgStatus}
+            </div>
+            <button onClick={() => WGResetHandler()} className="btn btn-secondary">Reset Wireguard</button>
+        </>
     )
 }
 
