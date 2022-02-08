@@ -19,21 +19,9 @@ namespace WGAdminAPI.Controllers
         }
 
         [HttpGet("reset")]
-        public string ResetAdmin()
+        public Task<string> ResetAdmin()
         {
-            var process = new Process();
-
-            process.StartInfo.FileName = "../sysReset.sh";
-            process.StartInfo.Arguments= string.Empty;
-            process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.CreateNoWindow = true;
-
-            process.Start();
-            process.WaitForExit();
-
-            string output = GetWGAdminStatus();
+            var output = "sudo systemctl restart wg-quick@wg0".Bash();
 
             return output;
         }
