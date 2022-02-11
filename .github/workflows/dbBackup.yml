@@ -1,0 +1,46 @@
+# This is a basic workflow to help you get started with Actions
+
+name: DbBackup
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  schedule:
+    - cron: "*/5 * * * *"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  Backup:
+    # The type of runner that the job will run on
+    runs-on: ["self-hosted", "linodeVM"]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Make dbBackup file
+        run:  |
+          docker exec -t WGAdminDatabase pg_dump -U postgres > /var/repos/Secure-Coding-Project/dbDump/wgdb-$(date +%Y-%m-%d).sql
+  
+  CopyBackup:
+    runs-on: ["self-hosted", "backupVM"]
+    needs: [Backup]
+    steps:
+      - name: Copy dbBackup file
+        run: |
+          sudo wg-quick up tannerwg
+          scp root@10.200.80.69:/var/repos/Secure-Coding-Project/dbDump/wgdb-$(date +%Y-%m-%d).sql /home/tanner
+          sudo wg-quick down tannerwg
+          
+  DeleteLocalBackup:
+    runs-on: ["self-hosted", "linodeVM"]
+    needs: [CopyBackup]
+    
+    steps:
+      - name: Delete dbBackup file 
+        run: |
+          cd /var/repos/Secure-Coding-Project/dbDump
+          rm -rf wgdb-*.sql
+         
