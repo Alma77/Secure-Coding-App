@@ -1,0 +1,48 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Backup Restore
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+        date:
+          description: 'Date of backup file to restore'     
+          required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  Copy-Backup-To-LinodeVM:
+    # The type of runner that the job will run on
+    runs-on: ['self-hosted', 'backupVM']
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Copy Backup File Over to LinodeVM
+        run: |
+          sudo wg-quick up tannerwg
+          scp /home/tanner/wgdb-${{github.event.inputs.date}}.sql root@10.200.80.69:/var/repos/Secure-Coding-Project/dbDump
+          sudo wg-quick down tannerwg
+
+  RestoreBackup:
+    runs-on: ['self-hosted', 'linodeVM']
+    needs: [Copy-Backup-To-LinodeVM]
+
+    steps:
+    - name: Restore the backup file to Database
+      run: |
+        cd /var/repos/Secure-Coding-Project/dbDump
+        docker exec -t WGAdminDatabase pg_restore -U postgres -c < /var/repos/Secure-Coding-Project/dbDump/wgdn-${{github.event.inputs.data}}.sql
+        
+  DeleteBackup:
+    runs-on: ['self-hosted', 'linodeVM']
+    needs: [RestoreBackup]
+    
+    steps:
+    - name: Delete the restored backup file
+      run: |
+        cd /var/repos/Secure-Coding-Project/dbDump
+        rm -rf wgdb-*.sql
+        
+        
