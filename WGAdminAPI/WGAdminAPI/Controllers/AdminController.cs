@@ -13,7 +13,7 @@ namespace WGAdminAPI.Controllers
         [HttpGet("status")]
         public Task<string> GetWGAdminStatus()
         {
-            var output = "sudo systemctl status wg-quick@wg0".Bash();
+            var output = "systemctl status wg-quick@wg0".Bash();
 
             return output;
         }

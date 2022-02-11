@@ -20,7 +20,7 @@ namespace WGAdminAPI.Services
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
-                    UserName = "root"
+		    WorkingDirectory = "/var/repos/Secure-Coding-Project/WGAdminAPI/WGAdminAPI",
                 }
             };
 

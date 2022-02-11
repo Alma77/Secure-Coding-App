@@ -6,21 +6,28 @@ const WGStatus = () => {
     const [wgStatus, setWGStatus] = useState("")
 
     useEffect(() => {
-        const response = GetWireGuardStatus();
+        const fetchData = async () => {
+            const response = await GetWireGuardStatus();
+            setWGStatus(response)
+        }
 
-        setWGStatus(response.data)
+        fetchData();
     },[])
 
     const WGResetHandler = () => {
-        const response = ResetWireGuard()
+        console.log("WGResetHandler Hit")
+        const fetchData = async () => {
+            const response = await ResetWireGuard()
+            setWGStatus(response)
+        }
 
-        setWGStatus(response.data)
+        fetchData();
     }
 
     return(
         <>
             <div className="py-5">
-                {wgStatus}
+                <p className="container">{wgStatus}</p>
             </div>
             <button onClick={() => WGResetHandler()} className="btn btn-secondary">Reset Wireguard</button>
         </>
