@@ -22,7 +22,7 @@ jobs:
       - name: Copy Backup File Over to LinodeVM
         run: |
           sudo wg-quick up tannerwg
-          scp /home/tanner/wgdb-${{github.event.inputs.date}}.sql root@10.200.80.69:/var/repos/Secure-Coding-Project/dbDump
+          scp /home/tanner/wgdb-${{github.event.inputs.date}}.sql root@10.200.80.69:/var/repos/Secure-Coding-Project/Restore/restore.sql
           sudo wg-quick down tannerwg
 
   RestoreBackup:
@@ -33,7 +33,7 @@ jobs:
     - name: Restore the backup file to Database
       run: |
         cat /var/repos/Secure-Coding-Project/dbDump/wgdb-${{github.event.inputs.date}}.sql
-        docker exec -i WGAdminDatabase pg_restore -U postgres -v -c -d postgres < /var/repos/Secure-Coding-Project/dbDump/wgdb-${{github.event.inputs.date}}.sql
+        docker exec -i WGAdminDatabase pg_restore -U postgres -v -c -d postgres < /var/repos/Secure-Coding-Project/Restore/restore.sql
         
   DeleteBackup:
     runs-on: ['self-hosted', 'linodeVM']
