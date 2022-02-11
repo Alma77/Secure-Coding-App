@@ -47,7 +47,7 @@ on:
 jobs:
 
   Build-WGAdminAPI:
-    runs-on: self-hosted
+    runs-on: linodeVM
 
     steps:
     - name: Stop WGAdminAPI Service
