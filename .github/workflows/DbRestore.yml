@@ -32,7 +32,6 @@ jobs:
     steps:
     - name: Restore the backup file to Database
       run: |
-        cat /var/repos/Secure-Coding-Project/dbDump/wgdb-${{github.event.inputs.date}}.sql
         docker exec -i WGAdminDatabase pg_restore -U postgres -v -c -d postgres < /var/repos/Secure-Coding-Project/Restore/restore.sql
         
   DeleteBackup:
