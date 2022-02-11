@@ -21,9 +21,9 @@ jobs:
     steps:
       - name: Copy Backup File Over to LinodeVM
         run: |
-          sudo wg-quick up tannerwg
+          wg-quick up tannerwg
           scp /home/tanner/wgdb-${{github.event.inputs.date}}.sql root@10.200.80.69:/var/repos/Secure-Coding-Project/dbDump
-          sudo wg-quick down tannerwg
+          wg-quick down tannerwg
 
   RestoreBackup:
     runs-on: ['self-hosted', 'linodeVM']
