@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Make dbBackup file
         run:  |
-          docker exec WGAdminDatabase -U postgres -F t postgres > /var/repos/Secure-Coding-Project/dbDump/wgdb-$(date +%Y-%m-%d).sql
+          docker exec WGAdminDatabase pg_dump -U postgres -F t postgres > /var/repos/Secure-Coding-Project/dbDump/wgdb-$(date +%Y-%m-%d).sql
   
   CopyBackup:
     runs-on: ["self-hosted", "backupVM"]
