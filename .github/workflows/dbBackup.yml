@@ -44,3 +44,10 @@ jobs:
           cd /var/repos/Secure-Coding-Project/dbDump
           rm -rf wgdb-*.sql
          
+  DeleteOldBackups:
+    runs-on: ["self-hosted", "backupVM"]
+    steps:
+      - name: Remove Old Backups
+        run: |
+          cd /home/tanner
+          find ./ -type f -mtime +30 | xargs rm -rf
