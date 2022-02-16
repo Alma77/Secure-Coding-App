@@ -46,6 +46,7 @@ jobs:
          
   DeleteOldBackups:
     runs-on: ["self-hosted", "backupVM"]
+    needs: [CopyBackup]
     steps:
       - name: Remove Old Backups
         run: |
