@@ -20,6 +20,7 @@ const LoginForm = () => {
 
     return(
         <div className='App App-header'>
+            <h1>Login Form</h1>
             <form onSubmit={onSubmitHandler()}>
                 <div className="input-group p-2">
                     <label className="form-label px-2">User Name:</label>
