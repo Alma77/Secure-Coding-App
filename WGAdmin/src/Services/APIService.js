@@ -13,7 +13,7 @@ export const GetClients = async () => {
 }
 
 export const CreateClient = async (client) => {
-    const response = await axios.post(baseURL + "/Clients", {...client}, header)
+    const response = await axios.post(baseURL + "/Clients", {...client}, header);
     return response.data;
 }
 

@@ -17,11 +17,11 @@ namespace WGAdminAPI
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            //using(var scope = host.Services.CreateScope())
-            //{
-            //   var db = scope.ServiceProvider.GetRequiredService<WGADbContext>();
-            //    db.Database.Migrate();
-            //}
+            using(var scope = host.Services.CreateScope())
+            {
+               var db = scope.ServiceProvider.GetRequiredService<WGADbContext>();
+                db.Database.Migrate();
+            }
 
             host.Run();
         }

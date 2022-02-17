@@ -58,7 +58,7 @@ services:
         volumes:
              - /etc/swag:/config
              - /etc/nginx/sites-enabled/secure-coding-app.conf:/config/nginx/site-confs/default
-             - /var/repos/WGAdmin/build:/WGAdmin
+             - /var/repos/Secure-Coding-Project/WGAdmin/build:/WGAdmin
         ports:
              - 443:443
              - 80:80
