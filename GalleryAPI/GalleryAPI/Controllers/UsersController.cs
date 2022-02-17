@@ -2,6 +2,7 @@
 using GalleryAPI.Database;
 using GalleryAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,6 +31,15 @@ namespace GalleryAPI.Controllers
         public async Task<User> Get(int id)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        [HttpPost("/login")]
+        public void Login([FromBody] User user)
+        {
+            CookieOptions cookieOptions = new CookieOptions();
+            cookieOptions.Expires = new DateTimeOffset(DateTime.Now.AddDays(7));
+            cookieOptions.HttpOnly = true;
+            HttpContext.Response.Cookies.Append(user.Name, "Hi there!", cookieOptions);
         }
 
         // POST api/<UsersController>
