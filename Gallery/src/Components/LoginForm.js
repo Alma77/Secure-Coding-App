@@ -14,14 +14,20 @@ const LoginForm = () => {
             password: password
         }
 
-        const postedUser = await Login(user)
+        try{
+            await Login(user)
+        }
+        catch(ex)
+        {
+            console.log(ex)
+        }
         console.log('Posted User: '+ user)
     }
 
     return(
         <div className='App App-header'>
             <h1>Login Form</h1>
-            <form onSubmit={onSubmitHandler()}>
+            <form onSubmit={onSubmitHandler}>
                 <div className="input-group p-2">
                     <label className="form-label px-2">User Name:</label>
                     <input className="form-control" type="text" onChange={(e) => setUserName(e.target.value)} />
@@ -30,6 +36,7 @@ const LoginForm = () => {
                     <label className="form-label px-2">Password:</label>
                     <input className="form-control" type="password" onChange={(e) => setPassword(e.target.value)} />
                 </div>
+                <button type="submit" className='btn btn-primary'>Submit</button>
             </form>
         </div>
     )

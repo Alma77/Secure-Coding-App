@@ -1,4 +1,5 @@
-﻿namespace GalleryAPI.Models
+﻿
+namespace GalleryAPI.Models
 {
     public class User
     {

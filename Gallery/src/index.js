@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { CookiesProvider } from 'react-cookie';
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
 import LoginForm from './Components/LoginForm';
 import './index.css';
@@ -7,15 +8,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap/dist/js/bootstrap.js'
+import Secure from './Components/Secure';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/login" element={<LoginForm />} />
-      </Routes>
-    </BrowserRouter>
+    <CookiesProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/secure" element={<Secure />} />
+        </Routes>
+      </BrowserRouter>
+    </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
