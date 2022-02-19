@@ -21,7 +21,7 @@ const LoginForm = () => {
         {
             console.log(ex)
         }
-        console.log('Posted User: '+ user)
+        console.log('Posted User: '+ {...user})
     }
 
     return(
