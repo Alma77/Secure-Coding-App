@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Logout } from '../Services/APIService';
 import "../App.css";
 
-const Logout = () => {
+const LogoutPage = () => {
 
     const [loggedOut, setLoggedOut] = useState(false);
 
@@ -28,4 +28,4 @@ const Logout = () => {
     )
 }
 
-export default Logout;
+export default LogoutPage;
