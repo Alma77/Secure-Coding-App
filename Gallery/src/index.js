@@ -9,6 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap/dist/js/bootstrap.js'
 import Secure from './Components/Secure';
+import Logout from './Components/Logout';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.render(
           <Route path="/" element={<App />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/secure" element={<Secure />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </BrowserRouter>
     </CookiesProvider>

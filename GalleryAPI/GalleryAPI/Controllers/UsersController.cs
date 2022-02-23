@@ -3,6 +3,7 @@ using GalleryAPI.Database;
 using GalleryAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -45,23 +46,31 @@ namespace GalleryAPI.Controllers
             }
             else
             {
-                byte[] hashBytes = Convert.FromBase64String(validUser.Password);
-                byte[] salt = new byte[16];
-                Array.Copy(hashBytes, 0, salt, 0, 16);
-                var pbkdf2 = new Rfc2898DeriveBytes(user.Password, salt, 100000);
-                byte[] hash = pbkdf2.GetBytes(20);
+                var salt = Convert.FromBase64String(validUser.Salt);
+                using (var rngCsp = new RNGCryptoServiceProvider())
+                {
+                    rngCsp.GetNonZeroBytes(salt);
+                }
 
-                for (int i = 0; i < 20; i++)
-                    if (hashBytes[i + 16] != hash[i])
-                        isValidPassword = false;
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: user.Password,
+                    salt: salt,
+                    prf: KeyDerivationPrf.HMACSHA256,
+                    iterationCount: 100000,
+                    numBytesRequested: 256 / 8));
 
-                if (isValidPassword)
+                if (hashed != validUser.Password)
+                {
+                    isValidPassword = false;
+                }
+
+            if (isValidPassword)
                 {
                     SessionData sessionData = new SessionData();
                     sessionData.SessionId = Guid.NewGuid().ToString();
                     sessionData.User = validUser;
-                    _context.Update(validUser);
-                    await _context.AddAsync(sessionData);
+
+                    await _context.Sessions.AddAsync(sessionData);
                     await _context.SaveChangesAsync();
 
                     CookieOptions cookieOptions = new CookieOptions();
@@ -69,7 +78,7 @@ namespace GalleryAPI.Controllers
                     cookieOptions.HttpOnly = true;
                     cookieOptions.SameSite = SameSiteMode.Strict;
 
-                    Response.Cookies.Append(sessionData.SessionId, validUser.Name, cookieOptions);
+                    Response.Cookies.Append("session" ,sessionData.SessionId, cookieOptions);
                 }
                 else
                 {
@@ -81,19 +90,17 @@ namespace GalleryAPI.Controllers
         [HttpPost("logout")]
         public async Task Logout()
         {
-            SessionData sessionData = new SessionData();
-            sessionData.SessionId = Request.Cookies.First().Key;
+            var sessionId = Request.Cookies["session"];
 
-            sessionData.Id = _context.Sessions.FirstOrDefault(s => s.SessionId == sessionData.SessionId).Id;
-            sessionData.User = _context.Sessions.FirstOrDefault(s => s.SessionId == sessionData.SessionId).User;
+            var sessionData = await _context.Sessions.FirstOrDefaultAsync(s => s.SessionId == sessionId);
 
             if (sessionData == null)
             {
-                throw new Exception("No valid session!");
+                throw new Exception("No session found!");
             }
             else
             {
-                Response.Cookies.Delete(sessionData.SessionId);
+                Response.Cookies.Delete("session");
 
                 _context.Sessions.Remove(sessionData);
                 await _context.SaveChangesAsync();
@@ -103,7 +110,7 @@ namespace GalleryAPI.Controllers
         [HttpGet("secure")]
         public async Task<SessionData> GetSession()
         {
-            var sessionId = Request.Cookies.First().Key;
+            var sessionId = Request.Cookies["session"];
             
             var session = await _context.Sessions.FirstOrDefaultAsync(s => s.SessionId == sessionId);
 
@@ -119,16 +126,21 @@ namespace GalleryAPI.Controllers
         [HttpPost]
         public async Task<User> Post([FromBody] User newUser)
         {
-            byte[] salt;
-            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-            var pbkdf2 = new Rfc2898DeriveBytes(newUser.Password, salt, 100000);
-            byte[] hash = pbkdf2.GetBytes(20);
-            byte[] hashBytes = new byte[36];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 20);
-            string savedPasswordHash = Convert.ToBase64String(hashBytes);
+            byte[] salt = new byte[128 / 8];
+            using (var rngCsp = new RNGCryptoServiceProvider())
+            {
+                rngCsp.GetNonZeroBytes(salt);
+            }
 
-            newUser.Password = savedPasswordHash;
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: newUser.Password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
+
+            newUser.Password = hashed;
+            newUser.Salt = Convert.ToBase64String(salt);
 
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();

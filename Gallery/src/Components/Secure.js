@@ -12,26 +12,20 @@ const Secure = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            try{
-                const session = await GetSession()
-                .catch(() => {
-                    navigate('/login')
-                })
-                setSession(session);
-            }
-            catch(ex)
-            {
-                setIsValid(true)
+            const session = await GetSession()
+            .then(() => setIsValid(true))
+            .catch((ex) => {
                 console.log(ex)
                 navigate('/login')
-            }
+            })
+            setSession(session);
         }
         fetchData();
     },[navigate])
 
     return(
         <div className="App App-header">
-            <h1>Welcome {isValid === true ? ` ${session.User.Name}` : ""}</h1>
+            {isValid === true ? <h1>Welcome {session.User.Name}</h1>: <h1></h1>}
         </div>
     )
 }
