@@ -123,14 +123,9 @@ namespace GalleryAPI.Controllers
         {
             var sessionId = Request.Cookies["session"];
             
-            var session = await _context.Sessions.FirstOrDefaultAsync(s => s.SessionId == sessionId);
-
-            if(session == null)
-            {
-                throw new Exception("no session found!");
-            }
-
-            return session;
+            var sessionData = await _context.Sessions.Include(s => s.User).FirstOrDefaultAsync(s => s.SessionId == sessionId);
+            
+            return sessionData;
         }
 
         // POST api/<UsersController>

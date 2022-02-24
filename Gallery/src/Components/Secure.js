@@ -13,12 +13,12 @@ const Secure = () => {
     useEffect(() => {
         const fetchData = async () => {
             const session = await GetSession()
-            .then(() => setIsValid(true))
-            .catch((ex) => {
-                console.log(ex)
-                navigate('/login')
-            })
-            setSession(session);
+            
+            if (session != null)
+            {
+                setIsValid(true)
+                setSession(session);
+            }
         }
         fetchData();
     },[navigate])
