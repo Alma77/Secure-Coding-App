@@ -25,7 +25,7 @@ const Secure = () => {
 
     return(
         <div className="App App-header">
-            {isValid === true ? <h1>Welcome {session.User.Name}</h1>: <h1></h1>}
+            {isValid === true} ? <h1>Welcome {session.User.Name}</h1> : <h1></h1>
         </div>
     )
 }

@@ -89,23 +89,30 @@ namespace GalleryAPI.Controllers
         }
 
         [HttpPost("logout")]
-        public async Task Logout()
+        public async Task<IActionResult> Logout()
         {
-            var sessionId = Request.Cookies["session"];
+            var sessionId = Request.Cookies["session"] ?? string.Empty;
+
+            if (sessionId == string.Empty)
+            {
+                return NotFound();
+            }
 
             var sessionData = await _context.Sessions.FirstOrDefaultAsync(s => s.SessionId == sessionId);
 
             if (sessionData == null)
             {
-                throw new Exception("No session found!");
+                return NotFound();
             }
             else
             {
-                Response.Cookies.Delete("session");
+                Response.Cookies.Delete(sessionId);
 
                 _context.Sessions.Remove(sessionData);
                 await _context.SaveChangesAsync();
             }
+
+            return Ok();
         }
 
         [HttpGet("secure")]
