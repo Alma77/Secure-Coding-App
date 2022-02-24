@@ -20,7 +20,7 @@ namespace WGAdminAPI
             using(var scope = host.Services.CreateScope())
             {
                var db = scope.ServiceProvider.GetRequiredService<WGADbContext>();
-                db.Database.Migrate();
+               db.Database.Migrate();
             }
 
             host.Run();

@@ -35,22 +35,20 @@ namespace GalleryAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async void Login([FromBody] User user)
+        public async Task<IActionResult> Login([FromBody] User user)
         {
+            Console.Write("Hit Login endpoint");
             var isValidPassword = true;
             var validUser = await _context.Users.FirstOrDefaultAsync(u => u.Name == user.Name);
 
             if (validUser == null)
             {
-                throw new UnauthorizedAccessException("User Name or Password is incorrect!");
+                Console.Write("User Name is incorrect");
+                return NotFound(user);
             }
             else
             {
                 var salt = Convert.FromBase64String(validUser.Salt);
-                using (var rngCsp = new RNGCryptoServiceProvider())
-                {
-                    rngCsp.GetNonZeroBytes(salt);
-                }
 
                 string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                     password: user.Password,
@@ -61,10 +59,11 @@ namespace GalleryAPI.Controllers
 
                 if (hashed != validUser.Password)
                 {
+                    Console.Write("password is incorrect");
                     isValidPassword = false;
                 }
 
-            if (isValidPassword)
+                if (isValidPassword)
                 {
                     SessionData sessionData = new SessionData();
                     sessionData.SessionId = Guid.NewGuid().ToString();
@@ -82,9 +81,11 @@ namespace GalleryAPI.Controllers
                 }
                 else
                 {
-                    throw new UnauthorizedAccessException("User Name or Password is incorrect!");
+                    return NotFound(user);
                 }
             }
+            
+            return Ok();
         }
 
         [HttpPost("logout")]

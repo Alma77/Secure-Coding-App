@@ -29,7 +29,7 @@ namespace WGAdminAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<WGADbContext>(options => options.UseNpgsql("host=192.168.48.4; password=wgadmin; database=postgres; user id=wgadmin;"));
+            services.AddDbContext<WGADbContext>(options => options.UseNpgsql("host=192.168.48.2; password=wgadmin; database=postgres; user id=wgadmin;"));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

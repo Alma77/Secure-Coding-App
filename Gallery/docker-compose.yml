@@ -1,8 +1,7 @@
 version: "3"
 services:
    secure-coding-app:
-        build: 
-            context: .
+        image: gallery_app
         container_name: tannersgallery
 #   nginx:
 #       image: nginx

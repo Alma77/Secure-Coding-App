@@ -14,14 +14,10 @@ const LoginForm = () => {
             password: password
         }
 
-        try{
-            await Login(user)
-        }
-        catch(ex)
-        {
-            console.log(ex)
-        }
-        console.log('Posted User: '+ {...user})
+        await Login(user)
+            .catch((ex) => {
+                console.log(ex);
+            });
     }
 
     return(
