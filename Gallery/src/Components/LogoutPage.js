@@ -23,7 +23,7 @@ const LogoutPage = () => {
 
     return (
         <div className='App App-header'>
-            {loggedOut === true} ? <h1>Successfully Logged Out</h1> : <h1>Log Out was unsuccessful</h1>
+            {loggedOut === true ? <h1>Successfully Logged Out</h1> : <h1>Log Out was unsuccessful</h1>}
         </div>
     )
 }

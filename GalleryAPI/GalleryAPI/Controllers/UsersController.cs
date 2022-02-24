@@ -73,7 +73,7 @@ namespace GalleryAPI.Controllers
                     await _context.SaveChangesAsync();
 
                     CookieOptions cookieOptions = new CookieOptions();
-                    cookieOptions.Expires = new DateTimeOffset(DateTime.Now.AddDays(7));
+                    cookieOptions.Expires = new DateTimeOffset(DateTime.Now.AddDays(1));
                     cookieOptions.HttpOnly = true;
                     cookieOptions.SameSite = SameSiteMode.Strict;
 
@@ -106,7 +106,10 @@ namespace GalleryAPI.Controllers
             }
             else
             {
-                Response.Cookies.Delete(sessionId);
+                CookieOptions cookieOptions = new CookieOptions();
+                cookieOptions.Expires = new DateTimeOffset(DateTime.Now.AddMinutes(-1));
+
+                Response.Cookies.Append("session", "", cookieOptions);
 
                 _context.Sessions.Remove(sessionData);
                 await _context.SaveChangesAsync();
