@@ -22,7 +22,7 @@ const NewUser = () => {
     return(
         <div className="App App-header">
             <h1>New User Form</h1>
-            <form onSubmit={onSubmitHandler()}>
+            <form onSubmit={onSubmitHandler}>
                 <div className="input-group p-2">
                     <label className="form-label px-2">User Name:</label>
                     <input className="form-control" type="text" onChange={(e) => setUserName(e.target.value)} />

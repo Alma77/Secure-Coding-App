@@ -25,6 +25,6 @@ export const Logout = async () => {
 
 export const GetSession = async () => {
     const response = await axios.get('https://www.tannersgallery.duckdns.org/api/Users/secure', header);
-    console.log(response.data);
-    return response.data;
+    console.log(response);
+    return response;
 }
