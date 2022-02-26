@@ -11,7 +11,8 @@ const NewUser = () => {
         e.preventDefault();
         const newUser = {
             name: userName,
-            password: password
+            password: password,
+            salt: "",
         }
 
         const postedUser = await PostUser(newUser)
@@ -30,6 +31,7 @@ const NewUser = () => {
                     <label className="form-label px-2">Password:</label>
                     <input className="form-control" type="password" onChange={(e) => setPassword(e.target.value)} />
                 </div>
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
         </div>
     )

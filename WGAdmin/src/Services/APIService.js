@@ -28,6 +28,6 @@ export const ResetWireGuard = async () => {
 }
 
 export const PostUser = async (user) => {
-    const response = await axios.post(baseURL + "/User", {...user}, header);
+    const response = await axios.post(baseURL + "/Users", {...user}, header);
     return response.data;
 }
