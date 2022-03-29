@@ -1,5 +1,6 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { Login } from '../Services/APIService';
+import { useMsal } from '@azure/msal-react';
 import '../App.css';
 
 const LoginForm = () => {
@@ -7,17 +8,28 @@ const LoginForm = () => {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
+    const loginRequest = {
+        scopes: ["User.Read"]
+    };
+
+    const { instance } = useMsal();
+
     const onSubmitHandler = async (e) => {
         e.preventDefault();
+
+        instance.loginPopup(loginRequest).catch(e => {
+            console.error(e);
+        });
+
         const user = {
             name: userName,
             password: password
         }
 
-        await Login(user)
-            .catch((ex) => {
-                console.log(ex);
-            });
+        // await Login(user)
+        //     .catch((ex) => {
+        //         console.log(ex);
+        //     });
     }
 
     return(
