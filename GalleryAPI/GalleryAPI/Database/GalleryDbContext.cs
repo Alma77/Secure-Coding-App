@@ -10,7 +10,7 @@ namespace GalleryAPI.Database
 
         }
 
-        public DbSet<User>? Users { get; set; }
+        public DbSet<UserDTO>? Users { get; set; }
         public DbSet<SessionData>? Sessions { get; set; }
     }
 }

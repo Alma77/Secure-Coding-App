@@ -22,22 +22,46 @@ namespace GalleryAPI.Controllers
 
         // GET: api/<UsersController>
         [HttpGet]
-        public async Task<IEnumerable<User>> Get()
+        public async Task<IEnumerable<UserDTO>> Get()
         {
             return await _context.Users.ToListAsync();
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public async Task<User> Get(int id)
+        public async Task<UserDTO> Get(int id)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] User user)
+        public async Task<IActionResult> Login([FromBody] UserDTO user)
         {
-            Console.Write("Hit Login endpoint");
+            var knownUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
+
+            if (knownUser == null)
+            {
+                _context.Users.AddAsync(user);
+                _context.SaveChangesAsync();
+
+            }
+
+            SessionData sessionData = new SessionData();
+            sessionData.SessionId = Guid.NewGuid().ToString();
+            sessionData.User = user;
+
+            await _context.Sessions.AddAsync(sessionData);
+            await _context.SaveChangesAsync();
+
+            CookieOptions cookieOptions = new CookieOptions();
+            cookieOptions.Expires = new DateTimeOffset(DateTime.Now.AddDays(1));
+            cookieOptions.HttpOnly = true;
+            cookieOptions.SameSite = SameSiteMode.Strict;
+
+            Response.Cookies.Append("session", sessionData.SessionId, cookieOptions);
+
+
+            /*Console.Write("Hit Login endpoint");
             var isValidPassword = true;
             var validUser = await _context.Users.FirstOrDefaultAsync(u => u.Name == user.Name);
 
@@ -83,8 +107,8 @@ namespace GalleryAPI.Controllers
                 {
                     return NotFound(user);
                 }
-            }
-            
+            }*/
+
             return Ok();
         }
 
@@ -130,7 +154,7 @@ namespace GalleryAPI.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public async Task<User> Post([FromBody] User newUser)
+        public async Task<IActionResult> Post([FromBody] UserDTO newUser)
         {
             byte[] salt = new byte[128 / 8];
             using (var rngCsp = new RNGCryptoServiceProvider())
@@ -138,7 +162,26 @@ namespace GalleryAPI.Controllers
                 rngCsp.GetNonZeroBytes(salt);
             }
 
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            try
+            {
+                User validUser = new User(new Username(newUser.Username), newUser.Password, Convert.ToBase64String(salt));
+
+                UserDTO newValidUser = new();
+                newValidUser.Username = validUser.Name.GetValue();
+                newValidUser.Password = validUser.Password;
+                newValidUser.Salt = validUser.Salt;
+
+                await _context.Users.AddAsync(newValidUser);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            /*string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: newUser.Password,
                 salt: salt,
                 prf: KeyDerivationPrf.HMACSHA256,
@@ -146,12 +189,7 @@ namespace GalleryAPI.Controllers
                 numBytesRequested: 256 / 8));
 
             newUser.Password = hashed;
-            newUser.Salt = Convert.ToBase64String(salt);
-
-            await _context.Users.AddAsync(newUser);
-            await _context.SaveChangesAsync();
-
-            return newUser;
+            newUser.Salt = Convert.ToBase64String(salt);*/
         }
 
         // PUT api/<UsersController>/5

@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using GalleryAPI.Database;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
