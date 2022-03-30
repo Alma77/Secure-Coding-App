@@ -6,8 +6,20 @@ const header = {
     }
 }
 
-export const Login = async (user) => {
-    const response = await axios.post('https://www.tannersgallery.duckdns.org/api/Users/login', {...user}, header);
+export const Login = async (token) => {
+    const loginHeader = {
+        headers : {
+            "Access-Control-Allow-Origin": "*",
+            "Authorization": "Bearer " + token.idToken,
+        }
+    }
+
+    const user = {
+        userName: token.UserName,
+        Password: "",
+        Salt: "",
+    }
+    const response = await axios.post('https://www.tannersgallery.duckdns.org/api/Users/login', {...user}, loginHeader);
     console.log(response.data);
     return response.data;
 }

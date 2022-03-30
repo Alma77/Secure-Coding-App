@@ -1,38 +1,23 @@
-import { useEffect, useState } from 'react'
-import { GetSession } from '../Services/APIService'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import "../App.css"
 
 const Secure = () => {
 
-    const [session, setSession] = useState({});
-    const [isValid, setIsValid] = useState(false)
+    const token = JSON.parse(window.localStorage.getItem('token'));
     const navigate = useNavigate();
 
 
     useEffect(() => {
-        const fetchData = async () => {
-            const session = await GetSession()
-                await GetSession()
-                .then(res => {
-                    console.log(res)
-                    if(res.status === 200)
-                    {
-                        setIsValid(true);
-                        setSession(res.data);
-                    }
-                    else
-                    {
-                        navigate("/login");
-                    }
-                })
+        if(token === "")
+        {
+            navigate("/login")
         }
-        fetchData();
-    },[navigate])
+    },[navigate, token])
 
     return(
         <div className="App App-header">
-            {isValid === true ? <h1>Welcome {session.user.name}</h1> : <></>}
+            <h1>Welcome {token.UserName}</h1>
         </div>
     )
 }
