@@ -2,12 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\GalleryAPI",
-    "\\Gallery\\src",
-    "\\Gallery\\src\\Components",
+    "\\GalleryAPI\\GalleryAPI",
     "\\WGAdminAPI",
     "\\WGAdminAPI\\WGAdminAPI",
     "\\WGAdminAPI\\WGAdminAPI\\Models"
   ],
-  "SelectedNode": "\\WGAdminAPI\\WGAdminAPI\\Models\\Client.cs",
+  "SelectedNode": "\\GalleryAPI\\GalleryAPI\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

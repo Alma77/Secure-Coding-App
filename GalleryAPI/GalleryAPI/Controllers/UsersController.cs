@@ -4,6 +4,7 @@ using GalleryAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,6 +36,7 @@ namespace GalleryAPI.Controllers
         }
 
         [HttpPost("login")]
+        [Authorize]
         public async Task<IActionResult> Login([FromBody] UserDTO user)
         {
             var knownUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
