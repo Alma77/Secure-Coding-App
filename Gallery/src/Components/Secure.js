@@ -9,7 +9,7 @@ const Secure = () => {
 
 
     useEffect(() => {
-        if(token === "")
+        if(token === "" || new Date(token.expiresOn).getTime() <= new Date().getTime())
         {
             navigate("/login")
         }
@@ -17,7 +17,7 @@ const Secure = () => {
 
     return(
         <div className="App App-header">
-            <h1>Welcome {token.UserName}</h1>
+            <h1>Welcome {token.idTokenClaims.name}</h1>
         </div>
     )
 }

@@ -18,8 +18,6 @@ const LoginForm = () => {
     useEffect(() => {
         console.log(token);
         const StartSession = async (token) => {
-            console.log(token)
-            window.localStorage.setItem('token', JSON.stringify(token))
             await Login(token)
 
             navigate("/secure")
@@ -27,26 +25,28 @@ const LoginForm = () => {
         const fetchData = async () => {
             if(token !== "")
             {
-                if(token.expiresOn <= new Date().getTime())
+                if(token.idTokenClaims.exp <= new Date().getTime())
                 {
-                    const loginRequest = {
-                        scopes: ["User.Read"]
-                    };
-            
-                    instance.loginPopup(loginRequest)
+                    const silentRequest = {
+                        scopes: ["User.Read"],
+                        account: {
+                            environment: "login.microsoftonline.com",
+                            homeAccountId: token.idTokenClaims.oid + "." + token.idTokenClaims.tid,
+                            userName: token.idTokenClaims.preferred_username,
+                        }
+                    }
+                    
+                    instance.acquireTokenSilent(silentRequest)
                         .then(res => {
-                            const token = {
-                                idToken: res.idToken,
-                                expiresOn: res.expiresOn.getTime(),
-                                extExpiresOn: res.extExpiresOn.getTime(),
-                                UserName: res.account.name,
-                            }
-                            StartSession(token)
+                            console.log(res)
+                            window.localStorage.setItem('token', JSON.stringify(res))
                         })
                         .catch(e => {
                             console.error(e);
                         });
                 }
+
+                navigate("/secure")
             }
             else
             {
@@ -57,24 +57,17 @@ const LoginForm = () => {
                 instance.loginPopup(loginRequest)
                     .then(res => {
                         console.log(res)
-                        const token = {
-                            idToken: res.idToken,
-                            expiresOn: res.expiresOn,
-                            extExpiresOn: res.extExpiresOn,
-                            UserName: res.account.name,
-                        }
+                        window.localStorage.setItem('token', JSON.stringify(res))
                         StartSession(token)
                     })
                     .catch(e => {
                         console.error(e);
                     });
-            }              
+            }            
         }
 
         fetchData();
-        navigate("/secure")
-
-    },[instance, token])
+    },[instance, token, navigate])
 
     return(
         // <div className='App App-header'>

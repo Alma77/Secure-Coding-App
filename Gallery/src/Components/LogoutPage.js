@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Logout } from '../Services/APIService';
+import { useMsal } from '@azure/msal-react';
+import { useNavigate } from 'react-router-dom';
 import "../App.css";
 
 const LogoutPage = () => {
 
     const [loggedOut, setLoggedOut] = useState(false);
+    const { instance } = useMsal();
 
     useEffect(() => {
         const fetch = async () => {
