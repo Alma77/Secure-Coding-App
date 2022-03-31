@@ -39,7 +39,7 @@ namespace GalleryAPI.Controllers
         [Authorize]
         public async Task<IActionResult> Login([FromBody] UserDTO user)
         {
-            var knownUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
+            var knownUser = await _context.Users.FirstOrDefaultAsync(u => u.Name == user.Name);
 
             if (knownUser == null)
             {
@@ -166,10 +166,10 @@ namespace GalleryAPI.Controllers
 
             try
             {
-                User validUser = new User(new Username(newUser.Username), newUser.Password, Convert.ToBase64String(salt));
+                User validUser = new User(new Username(newUser.Name), newUser.Password, Convert.ToBase64String(salt));
 
                 UserDTO newValidUser = new();
-                newValidUser.Username = validUser.Name.GetValue();
+                newValidUser.Name = validUser.Name.GetValue();
                 newValidUser.Password = validUser.Password;
                 newValidUser.Salt = validUser.Salt;
 

@@ -3,10 +3,11 @@
     "",
     "\\GalleryAPI",
     "\\GalleryAPI\\GalleryAPI",
+    "\\GalleryAPI\\GalleryAPI\\Controllers",
     "\\WGAdminAPI",
     "\\WGAdminAPI\\WGAdminAPI",
     "\\WGAdminAPI\\WGAdminAPI\\Models"
   ],
-  "SelectedNode": "\\GalleryAPI\\GalleryAPI\\Program.cs",
+  "SelectedNode": "\\GalleryAPI\\GalleryAPI\\Controllers\\UsersController.cs",
   "PreviewInSolutionExplorer": false
 }
