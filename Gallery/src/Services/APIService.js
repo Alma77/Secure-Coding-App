@@ -15,11 +15,11 @@ export const Login = async (token) => {
     }
 
     const user = {
-        userName: token.UserName,
+        Name: token.idTokenClaims.name,
         Password: "",
         Salt: "",
     }
-    const response = await axios.post('https://admin.tannersgallery.duckdns.org/api/Users/login', {...user}, header);
+    const response = await axios.post('https://www.tannersgallery.duckdns.org/api/Users/login', {...user}, header);
     console.log(response.data);
     return response.data;
 }

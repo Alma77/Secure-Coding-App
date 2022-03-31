@@ -23,7 +23,7 @@ const msalConfig = {
   auth: {
     authority: "https://login.microsoftonline.com/consumers",
     clientId: "1ce419d8-9475-4d32-a8db-ad18b6338b4a",
-    redirectUri: "http://localhost:3000/login",
+    redirectUri: "https://www.tannersgallery.duckdns.org/login",
   },
   cache: {
     cacheLocation: "sessionStorage",
