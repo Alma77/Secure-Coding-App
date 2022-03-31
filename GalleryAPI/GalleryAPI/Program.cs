@@ -3,8 +3,12 @@ using GalleryAPI.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Logging;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+IdentityModelEventSource.ShowPII = true;
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -23,13 +27,29 @@ builder.Services.AddAuthentication(options =>
 .AddJwtBearer(options =>
 {
     options.Audience = "1ce419d8-9475-4d32-a8db-ad18b6338b4a";
-    options.Authority = "https://login.microsoftonline.com/consumers/";
+    options.Authority = "https://login.microsoftonline.com/consumers/v2.0/";
     options.TokenValidationParameters = new TokenValidationParameters()
     {
         ValidAudience = "1ce419d8-9475-4d32-a8db-ad18b6338b4a",
         ValidateIssuerSigningKey = true,
         ValidateIssuer = true,
-        ValidIssuers = new List<string>() { "https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0", "login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0" }
+        ValidIssuer = "https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0",
+    };
+
+    options.Events = new JwtBearerEvents()
+    {
+        OnAuthenticationFailed = c =>
+        {
+            Console.WriteLine("Authentication failure");
+            Console.WriteLine(c.Exception);
+
+            c.NoResult();
+
+            c.Response.StatusCode = 500;
+            c.Response.ContentType = "text/plain";
+
+            return c.Response.WriteAsync(c.Exception.ToString());
+        }
     };
 });
 
@@ -47,6 +67,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 
 app.UseAuthorization();
 

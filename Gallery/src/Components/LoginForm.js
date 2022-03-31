@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 import { Login} from '../Services/APIService';
 import { useMsal } from '@azure/msal-react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
 const LoginForm = () => {
@@ -16,16 +16,15 @@ const LoginForm = () => {
     // }
     
     useEffect(() => {
-        console.log(token);
         const StartSession = async (token) => {
             await Login(token)
 
             navigate("/secure")
         }
         const fetchData = async () => {
-            if(token !== "")
+            if(token !== null)
             {
-                if(token.idTokenClaims.exp <= new Date().getTime())
+                if(token.idTokenClaims.exp < new Date()/1000)
                 {
                     const silentRequest = {
                         scopes: ["User.Read"],
@@ -58,7 +57,7 @@ const LoginForm = () => {
                     .then(res => {
                         console.log(res)
                         window.localStorage.setItem('token', JSON.stringify(res))
-                        StartSession(token)
+                        StartSession(res)
                     })
                     .catch(e => {
                         console.error(e);

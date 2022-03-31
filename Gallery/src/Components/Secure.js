@@ -9,15 +9,20 @@ const Secure = () => {
 
 
     useEffect(() => {
-        if(token === "" || new Date(token.expiresOn).getTime() <= new Date().getTime())
+        if(token === null || token.idTokenClaims.exp < new Date()/1000)
         {
             navigate("/login")
         }
     },[navigate, token])
 
+    const content = (token !== null 
+        ? <h1>Welcome {token.idTokenClaims.name} </h1>
+        : <></>            
+    )
+
     return(
         <div className="App App-header">
-            <h1>Welcome {token.idTokenClaims.name}</h1>
+            {content}
         </div>
     )
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Logout } from '../Services/APIService';
 import { useMsal } from '@azure/msal-react';
-import { useNavigate } from 'react-router-dom';
 import "../App.css";
 
 const LogoutPage = () => {
@@ -10,7 +9,8 @@ const LogoutPage = () => {
     const { instance } = useMsal();
 
     useEffect(() => {
-        const fetch = async () => {
+        const StartLogout = async () => {
+            window.localStorage.removeItem('token');
             await Logout()
             .then(() => {
                 console.log("Successfully Logged Out")
@@ -19,10 +19,20 @@ const LogoutPage = () => {
             .catch((ex) => {
                 console.log(ex)
             })
+        } 
+        const fetch = async () => {
+
+            instance.logoutPopup()
+                .then(() => {
+                    StartLogout()
+                })
+                .catch(e => {
+                    console.error(e);
+                })
         }
 
         fetch();
-    })
+    },[instance])
 
     return (
         <div className='App App-header'>

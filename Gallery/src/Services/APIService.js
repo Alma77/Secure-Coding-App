@@ -19,7 +19,7 @@ export const Login = async (token) => {
         Password: "",
         Salt: "",
     }
-    const response = await axios.post('http://localhost:5119/api/Users/login', {...user}, header);
+    const response = await axios.post('https://admin.tannersgallery.duckdns.org/api/Users/login', {...user}, header);
     console.log(response.data);
     return response.data;
 }
