@@ -14,6 +14,7 @@ const Secure = () => {
     const uploadImageHandler = async (e) => {
         e.preventDefault();
         formData.append("profileImage", profileImage);
+        formData.append("username", token.idTokenClaims.name)
 
         await PostProfileImage(formData);
     };
