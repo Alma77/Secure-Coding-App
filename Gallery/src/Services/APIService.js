@@ -51,7 +51,7 @@ export const PostProfileImage = async (formData) => {
         }
     }
 
-    const response = await axios.post('http://www.tannersgallery.duckdns.org/api/Users/image', formData , header)
+    const response = await axios.post('https://www.tannersgallery.duckdns.org/api/Users/image', formData , header)
     console.log(response);
     return response.data;
 }
