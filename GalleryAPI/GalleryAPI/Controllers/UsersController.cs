@@ -158,9 +158,9 @@ namespace GalleryAPI.Controllers
 
         [HttpPost("image")]
         [Authorize]
-        public async Task<IActionResult> PostClientImage([FromForm] HttpContent profileImage)
+        public async Task<IActionResult> PostClientImage([FromForm] IFormFile profileImage)
         {
-            var fileExtension = profileImage.Headers.ContentDisposition.FileName.Split('.')[1];
+            var fileExtension = profileImage.Name.Split('.')[1];
 
             if(!allowedFileExtensions.Any(a => a.Equals(fileExtension)))
             {
@@ -224,7 +224,7 @@ namespace GalleryAPI.Controllers
         {
         }
         
-        private async Task SaveProfileImage(HttpContent file, string extension)
+        private async Task SaveProfileImage(IFormFile file, string extension)
         {
             var sessionId = Request.Cookies["session"];
 
