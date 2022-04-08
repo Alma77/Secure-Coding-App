@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const token = window.localStorage.getItem("token");
-
 const header = {
     headers : {
         "Access-Control-Allow-Origin": "*"
@@ -44,6 +42,9 @@ export const GetSession = async () => {
 }
 
 export const PostProfileImage = async (formData) => {
+    
+    const token = window.localStorage.getItem("token");
+
     const header = {
         headers : {
             "Authorization" : "Bearer " + token.idToken,
