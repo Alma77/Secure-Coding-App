@@ -15,8 +15,6 @@ const Secure = () => {
         e.preventDefault();
         formData.append("profileImage", profileImage);
 
-        console.log(profileImage)
-        
         await PostProfileImage(formData);
     };
 
