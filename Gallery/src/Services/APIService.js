@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const token = window.localStorage.getItem("token");
+
 const header = {
     headers : {
         "Access-Control-Allow-Origin": "*"
@@ -41,16 +43,15 @@ export const GetSession = async () => {
     return response;
 }
 
-export const PostProfileImage = async (props) => {
-
+export const PostProfileImage = async (formData) => {
     const header = {
         headers : {
-            "Authorization" : "Bearer " + props.token.idToken,
+            "Authorization" : "Bearer " + token.idToken,
             "Access-Control-Allow-Origin": "*",
         }
     }
 
-    const response = await axios.post('http://www.tannersgallery.duckdns.org/api/Users/image', props.formData , header)
+    const response = await axios.post('https://www.tannersgallery.duckdns.org/api/Users/image', formData , header)
 
     console.log(response);
     return response.data;
