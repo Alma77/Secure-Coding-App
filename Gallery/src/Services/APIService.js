@@ -41,16 +41,16 @@ export const GetSession = async () => {
     return response;
 }
 
-export const PostProfileImage = async ({formData, token}) => {
+export const PostProfileImage = async (props) => {
 
     const header = {
         headers : {
-            "Authorization" : "Bearer " + token.idToken,
+            "Authorization" : "Bearer " + props.token.idToken,
             "Access-Control-Allow-Origin": "*",
         }
     }
 
-    const response = await axios.post('http://www.tannersgallery.duckdns.org/api/Users/image', formData , header)
+    const response = await axios.post('http://www.tannersgallery.duckdns.org/api/Users/image', props.formData , header)
     console.log(response);
     return response.data;
 }
