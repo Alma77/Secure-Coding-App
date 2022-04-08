@@ -9,6 +9,7 @@ const Secure = () => {
     const navigate = useNavigate();
 
     const formData = new FormData();
+    const [extension, setExtension] = useState();
     const [profileImage, setProfileImage] = useState();
 
     const uploadImageHandler = async (e) => {
@@ -16,7 +17,7 @@ const Secure = () => {
         formData.append("profileImage", profileImage);
         formData.append("username", token.idTokenClaims.name)
 
-        await PostProfileImage(formData);
+        setExtension(await PostProfileImage(formData));
     };
 
     useEffect(() => {
@@ -30,7 +31,7 @@ const Secure = () => {
         ? (
         <div>
             <div>
-                <img className='img-fluid' alt="profile" src={`../Images/ProfileImages/${token.idTokenClaims.name}_ProfileImage`} />
+                <img className='img-fluid' alt="profile" src={`../Images/ProfileImages/${token.idTokenClaims.name}_ProfileImage.${extension}`} />
             </div>
             <h1>Welcome {token.idTokenClaims.name} </h1>
             <form onSubmit={uploadImageHandler}>
