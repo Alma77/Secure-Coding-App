@@ -26,19 +26,15 @@ const LoginForm = () => {
             {
                 if(token.idTokenClaims.exp < new Date()/1000)
                 {
-                    const silentRequest = {
-                        scopes: ["User.Read"],
-                        account: {
-                            environment: "login.microsoftonline.com",
-                            homeAccountId: token.idTokenClaims.oid + "." + token.idTokenClaims.tid,
-                            userName: token.idTokenClaims.preferred_username,
-                        }
-                    }
-                    
-                    instance.acquireTokenSilent(silentRequest)
+                    const loginRequest = {
+                        scopes: ["User.Read"]
+                    };
+            
+                    instance.loginPopup(loginRequest)
                         .then(res => {
                             console.log(res)
                             window.localStorage.setItem('token', JSON.stringify(res))
+                            StartSession(res)
                         })
                         .catch(e => {
                             console.error(e);

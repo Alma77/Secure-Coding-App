@@ -40,3 +40,18 @@ export const GetSession = async () => {
     console.log(response);
     return response;
 }
+
+export const PostProfileImage = async (formData) => {
+
+    const token = window.localStorage.getItem('token');
+    const header = {
+        headers : {
+            "Authorization" : "Bearer " + token.idToken,
+            "Access-Control-Allow-Origin": "*",
+        }
+    }
+
+    const response = await axios.post('http://www.tannersgallery.duckdns.org/api/Users/image', formData , header)
+    console.log(response);
+    return response.data;
+}

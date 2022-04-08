@@ -1,7 +1,10 @@
 import logo from './logo.svg';
+import { useState } from 'react';
+import { PostProfileImage } from './Services/APIService';
 import './App.css';
 
 function App() {
+
   return (
     <div className="App">
       <header className="App-header">
