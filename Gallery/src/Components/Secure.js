@@ -17,7 +17,7 @@ const Secure = () => {
 
         console.log(profileImage)
 
-        await PostProfileImage(formData);
+        await PostProfileImage(formData, token);
     };
 
     useEffect(() => {

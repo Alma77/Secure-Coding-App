@@ -41,9 +41,8 @@ export const GetSession = async () => {
     return response;
 }
 
-export const PostProfileImage = async (formData) => {
+export const PostProfileImage = async ({formData, token}) => {
 
-    const token = window.localStorage.getItem('token');
     const header = {
         headers : {
             "Authorization" : "Bearer " + token.idToken,
