@@ -158,16 +158,16 @@ namespace GalleryAPI.Controllers
 
         [HttpPost("image")]
         [Authorize]
-        public async Task<IActionResult> PostClientImage([FromForm] IFormFile profileImage)
+        public async Task<IActionResult> PostClientImage([FromForm] IFormFile profileImage,[FromForm] string username)
         {
-            var fileExtension = profileImage.Name.Split('.')[1];
+            var fileExtension = profileImage.FileName.Split('.')[1];
 
             if(!allowedFileExtensions.Any(a => a.Equals(fileExtension)))
             {
                 return BadRequest($"File with extension {fileExtension} is not allowed!");
             }
 
-            await SaveProfileImage(profileImage, fileExtension);
+            await SaveProfileImage(profileImage, fileExtension, username);
 
             return Ok();
         }
@@ -224,18 +224,9 @@ namespace GalleryAPI.Controllers
         {
         }
         
-        private async Task SaveProfileImage(IFormFile file, string extension)
+        private async Task SaveProfileImage(IFormFile file, string extension, string username)
         {
-            var sessionId = Request.Cookies["session"];
-
-            var sessionData = await _context.Sessions.FirstOrDefaultAsync(s => s.Id.ToString() == sessionId);
-
-            if (sessionData == null)
-            {
-                Console.Error.WriteLine("No Session Data Found!");
-            }
-
-            var fileName = $"{sessionData.User.Name}ProfileImage.{extension}";
+            var fileName = $"{username}_ProfileImage.{extension}";
 
             var pathBuilt = "/var/repos/Secure-Coding-Project/Gallery/src/Images/ProfileImages";
 
@@ -245,11 +236,6 @@ namespace GalleryAPI.Controllers
             }
 
             var path = Path.Combine(pathBuilt, fileName);
-
-            sessionData.User.ProfileImage = path;
-            _context.Users.Update(sessionData.User);
-            _context.Sessions.Update(sessionData);
-            await _context.SaveChangesAsync();
 
             using (var stream = new FileStream(path, FileMode.Create))
             {
