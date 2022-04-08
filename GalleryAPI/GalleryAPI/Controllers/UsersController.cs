@@ -157,7 +157,6 @@ namespace GalleryAPI.Controllers
         }
 
         [HttpPost("image")]
-        [Authorize]
         public async Task<IActionResult> PostClientImage([FromForm] IFormFile profileImage,[FromForm] string username)
         {
             var fileExtension = profileImage.FileName.Split('.')[1];
@@ -169,7 +168,7 @@ namespace GalleryAPI.Controllers
 
             await SaveProfileImage(profileImage, fileExtension, username);
 
-            return Ok();
+            return Ok(fileExtension);
         }
 
         // POST api/<UsersController>
@@ -228,7 +227,7 @@ namespace GalleryAPI.Controllers
         {
             var fileName = $"{username}_ProfileImage.{extension}";
 
-            var pathBuilt = "/var/repos/Secure-Coding-Project/Gallery/src/Images/ProfileImages";
+            var pathBuilt = "/var/repos/Secure-Coding-Project/Gallery/build/ProfileImages";
 
             if (!Directory.Exists(pathBuilt))
             {
