@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Authorization;
+using System.Web.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,6 +16,8 @@ namespace GalleryAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly GalleryDbContext _context;
+        private readonly List<string> allowedFileExtensions = new() { "jpeg", "jpg", "png", "svg" };
+
 
         public UsersController(GalleryDbContext context)
         {
@@ -41,11 +44,10 @@ namespace GalleryAPI.Controllers
         {
             var knownUser = await _context.Users.FirstOrDefaultAsync(u => u.Name == user.Name);
 
-            if (knownUser == null)
+            if (knownUser.Name == null)
             {
                 _context.Users.AddAsync(user);
                 _context.SaveChangesAsync();
-
             }
 
             SessionData sessionData = new SessionData();
@@ -154,6 +156,22 @@ namespace GalleryAPI.Controllers
             return sessionData;
         }
 
+        [HttpPost("image")]
+        [Authorize]
+        public async Task<IActionResult> PostClientImage([FromForm] HttpContent profileImage)
+        {
+            var fileExtension = profileImage.Headers.ContentDisposition.FileName.Split('.')[1];
+
+            if(!allowedFileExtensions.Any(a => a.Equals(fileExtension)))
+            {
+                return BadRequest($"File with extension {fileExtension} is not allowed!");
+            }
+
+            await SaveProfileImage(profileImage, fileExtension);
+
+            return Ok();
+        }
+
         // POST api/<UsersController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UserDTO newUser)
@@ -204,6 +222,39 @@ namespace GalleryAPI.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+        
+        private async Task SaveProfileImage(HttpContent file, string extension)
+        {
+            var sessionId = Request.Cookies["session"];
+
+            var sessionData = await _context.Sessions.FirstOrDefaultAsync(s => s.Id.ToString() == sessionId);
+
+            if (sessionData == null)
+            {
+                Console.Error.WriteLine("No Session Data Found!");
+            }
+
+            var fileName = $"{sessionData.User.Name}ProfileImage.{extension}";
+
+            var pathBuilt = "/var/repos/Secure-Coding-Project/Gallery/src/Images/ProfileImages";
+
+            if (!Directory.Exists(pathBuilt))
+            {
+                Directory.CreateDirectory(pathBuilt);
+            }
+
+            var path = Path.Combine(pathBuilt, fileName);
+
+            sessionData.User.ProfileImage = path;
+            _context.Users.Update(sessionData.User);
+            _context.Sessions.Update(sessionData);
+            await _context.SaveChangesAsync();
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
         }
     }
 }
