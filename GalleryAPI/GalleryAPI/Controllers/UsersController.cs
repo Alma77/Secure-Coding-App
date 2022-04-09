@@ -227,7 +227,7 @@ namespace GalleryAPI.Controllers
         {
             var fileName = $"{username}_ProfileImage.{extension}";
 
-            var pathBuilt = "/var/repos/Secure-Coding-Project/Gallery/build/Images/ProfileImages";
+            var pathBuilt = "/var/repos/Secure-Coding-Project/Gallery/public/Images/ProfileImages";
 
             if (!Directory.Exists(pathBuilt))
             {
