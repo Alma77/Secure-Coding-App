@@ -34,7 +34,7 @@ const Secure = () => {
         ? (
         <div>
             <div>
-                <img width="250" height="250" className='img-fluid' alt="profile" src={`https://wwww.tannersgallery.duckdns.org/Images/ProfilePictures/${token.idTokenClaims.name}_ProfileImage.${extension}`} />
+                <img width="250" height="250" className='img-fluid' alt="profile" src={`https://wwww.tannersgallery.duckdns.org/Images/ProfilePictures/${token.idTokenClaims.name.trim()}_ProfileImage.${extension}`} />
             </div>
             <h1>Welcome {token.idTokenClaims.name} </h1>
             <form onSubmit={uploadImageHandler}>
