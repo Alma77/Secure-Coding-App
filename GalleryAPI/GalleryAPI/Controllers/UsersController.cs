@@ -158,6 +158,7 @@ namespace GalleryAPI.Controllers
         }
 
         [HttpPost("image")]
+        [Authorize]
         public async Task<IActionResult> PostClientImage([FromForm] IFormFile profileImage,[FromForm] string username)
         {
             using (var ms = new MemoryStream())
