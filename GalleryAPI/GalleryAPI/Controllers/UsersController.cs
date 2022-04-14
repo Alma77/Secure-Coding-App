@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Authorization;
 using System.Web.Http;
+using FileTypeChecker;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,7 +17,7 @@ namespace GalleryAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly GalleryDbContext _context;
-        private readonly List<string> allowedFileExtensions = new() { "jpeg", "jpg", "png", "svg" };
+        private readonly List<string> allowedFileExtensions = new() { "jpeg", "jpg", "png", "svg", "webp" };
 
 
         public UsersController(GalleryDbContext context)
@@ -159,6 +160,18 @@ namespace GalleryAPI.Controllers
         [HttpPost("image")]
         public async Task<IActionResult> PostClientImage([FromForm] IFormFile profileImage,[FromForm] string username)
         {
+            using (var ms = new MemoryStream())
+            {
+                profileImage.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                string s = Convert.ToBase64String(fileBytes);
+                var isValidFile = FileTypeValidator.IsImage(ms);
+                if (!isValidFile)
+                {
+                    return BadRequest($"File is not valid!");
+                }
+            }
+
             var fileExtension = profileImage.FileName.Split('.')[1];
 
             if(!allowedFileExtensions.Any(a => a.Equals(fileExtension)))
@@ -227,7 +240,7 @@ namespace GalleryAPI.Controllers
         {
             var fileName = $"{username}_ProfileImage.{extension}";
 
-            var pathBuilt = "/var/repos/Secure-Coding-Project/Gallery/public/Images/ProfileImages";
+            var pathBuilt = "/var/repos/Secure-Coding-Project/GalleryAPI/wwwroot/Images/ProfilePictures";
 
             if (!Directory.Exists(pathBuilt))
             {
