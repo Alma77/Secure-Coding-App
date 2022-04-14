@@ -239,7 +239,11 @@ namespace GalleryAPI.Controllers
         
         private async Task SaveProfileImage(IFormFile file, string extension, string username)
         {
-            var fileName = $"{username.Trim()}_ProfileImage.{extension}";
+            var temp = username.Split(" ");
+
+            var name = temp[0] + temp[1];
+
+            var fileName = $"{name}_ProfileImage.{extension}";
 
             var pathBuilt = "/srv/GalleryAPI/wwwroot/Images/ProfilePictures";
 
