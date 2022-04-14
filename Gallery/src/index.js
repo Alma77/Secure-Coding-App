@@ -34,7 +34,6 @@ const msalConfig = {
 const msalInstance = new PublicClientApplication(msalConfig);
 
 ReactDOM.render(
-
   <React.StrictMode>
     <Provider store={store}>
       <MsalProvider instance={msalInstance}>
