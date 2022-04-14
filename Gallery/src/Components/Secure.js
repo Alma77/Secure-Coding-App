@@ -39,6 +39,8 @@ const Secure = () => {
                 <input type="file" className='form-control' onChange={(e) => setProfileImage(e.target.files[0])} />
                 <button type="submit" className='btn btn-primary' >Upload Image</button>
             </form>
+
+            <button className="btn btn-primary" onClick={() => navigate("/logout")}>Logout</button>
         </div>
         )
         : <></>            

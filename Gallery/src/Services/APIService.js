@@ -42,12 +42,11 @@ export const GetSession = async () => {
 }
 
 export const PostProfileImage = async (formData) => {
-    const getToken = async () => {
-        return localStorage.getItem("token").idToken;
-    }
     const header = {
         headers : {
-            "Authorization" : "Bearer " + await getToken(),
+            "Authorization" : "Bearer " + await Promise(async () => {
+                return localStorage.getItem("token")
+            }),
             "Access-Control-Allow-Origin": "*",
         }
     }

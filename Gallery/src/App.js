@@ -1,9 +1,16 @@
 import logo from './logo.svg';
-import { useState } from 'react';
-import { PostProfileImage } from './Services/APIService';
+import { useNavigate } from 'react-router-dom';
+
 import './App.css';
 
 function App() {
+
+  const token = window.localStorage.getItem("token");
+  const navigate = useNavigate();
+  const loginlogout = ( token === null
+    ? <button className="btn btn-primary" onClick={() => navigate("/login")}>Login</button>
+    : <button classNam="btn btn-primary" onClick={() => navigate("/logout")}>Logout</button>
+  )
 
   return (
     <div className="App">
@@ -20,6 +27,8 @@ function App() {
         >
           Learn React
         </a>
+
+        {loginlogout}
       </header>
     </div>
   );
