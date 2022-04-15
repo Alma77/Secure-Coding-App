@@ -175,14 +175,20 @@ namespace GalleryAPI.Controllers
 
             var fileExtension = profileImage.FileName.Split('.')[1];
 
-            if(!allowedFileExtensions.Any(a => a.Equals(fileExtension)))
+            var temp = username.Split(" ");
+
+            var name = temp[0] + temp[1];
+
+            if (!allowedFileExtensions.Any(a => a.Equals(fileExtension)))
             {
                 return BadRequest($"File with extension {fileExtension} is not allowed!");
             }
 
-            await SaveProfileImage(profileImage, fileExtension, username);
+            await SaveProfileImage(profileImage, fileExtension, name);
 
-            return Ok(fileExtension);
+            Models.File file = new(name, fileExtension);
+
+            return Ok(file);
         }
 
         // POST api/<UsersController>
@@ -239,11 +245,7 @@ namespace GalleryAPI.Controllers
         
         private async Task SaveProfileImage(IFormFile file, string extension, string username)
         {
-            var temp = username.Split(" ");
-
-            var name = temp[0] + temp[1];
-
-            var fileName = $"{name}_ProfileImage.{extension}";
+            var fileName = $"{username}_ProfileImage.{extension}";
 
             var pathBuilt = "/srv/GalleryAPI/wwwroot/Images/ProfilePictures";
 
