@@ -9,7 +9,13 @@ function App() {
   const navigate = useNavigate();
   const loginlogout = ( token === null
     ? <button className="btn btn-primary" onClick={() => navigate("/login")}>Login</button>
-    : <button classNam="btn btn-primary" onClick={() => navigate("/logout")}>Logout</button>
+    : (
+    <>
+      <div>
+        <button className="btn btn-link" onClick={() => navigate("/secure")} >Main Content</button>
+      </div>
+      <button className="btn btn-primary" onClick={() => navigate("/logout")}>Logout</button>
+    </>)
   )
 
   return (

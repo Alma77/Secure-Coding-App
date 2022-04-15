@@ -9,7 +9,7 @@ const Secure = () => {
     const navigate = useNavigate();
 
     const formData = new FormData();
-    const [extension, setExtension] = useState();
+    const [file, setFile] = useState();
     const [profileImage, setProfileImage] = useState();
 
     const uploadImageHandler = async (e) => {
@@ -18,9 +18,9 @@ const Secure = () => {
         formData.append("profileImage", profileImage);
         formData.append("username", token.idTokenClaims.name)
 
-        const extension = await PostProfileImage({formData: formData, token: token.idToken});
+        const file = await PostProfileImage({formData: formData, token: token.idToken});
 
-        setExtension(extension);
+        setFile(file);
     };
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const Secure = () => {
         ? (
         <div>
             <div>
-                <img width="250" height="250" className='img-fluid' alt="profile" src={`https://wwww.tannersgallery.duckdns.org/Images/ProfilePictures/${token.idTokenClaims.name.trim()}_ProfileImage.${extension}`} />
+                <img width="250" height="250" className='img-fluid' alt="profile" src={`https://wwww.tannersgallery.duckdns.org/Images/ProfilePictures/${file.Name}_ProfileImage.${file.Extension}`} />
             </div>
             <h1>Welcome {token.idTokenClaims.name} </h1>
             <form onSubmit={uploadImageHandler}>
@@ -50,9 +50,15 @@ const Secure = () => {
     )
 
     return(
-        <div className="App App-header">
-            {content}
+        <div>
+            <div className="App App-header">
+                {content}
+            </div>
+            <div className="container">
+                
+            </div>
         </div>
+        
     )
 }
 
