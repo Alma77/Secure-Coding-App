@@ -12,5 +12,6 @@ namespace GalleryAPI.Database
 
         public DbSet<UserDTO>? Users { get; set; }
         public DbSet<SessionData>? Sessions { get; set; }
+        public DbSet<CommentDTO>? Comments { get; set; }
     }
 }

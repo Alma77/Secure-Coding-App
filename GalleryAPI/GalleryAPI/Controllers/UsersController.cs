@@ -230,6 +230,29 @@ namespace GalleryAPI.Controllers
             newUser.Password = hashed;
             newUser.Salt = Convert.ToBase64String(salt);*/
         }
+        [HttpGet("Comments")]
+        public async Task<IEnumerable<CommentDTO>> GetComments()
+        {
+            return await _context.Comments.ToListAsync();
+        }
+
+        [HttpPost("Comments")]
+        public async Task<IActionResult> PostComment([FromBody] CommentDTO comment)
+        {
+            try
+            {
+                Comment validatedComment = new(comment);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            await _context.Comments.AddAsync(comment);
+            await _context.SaveChangesAsync();
+
+            return Ok(comment);
+        }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
