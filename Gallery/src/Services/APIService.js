@@ -54,3 +54,18 @@ export const PostProfileImage = async (props) => {
     console.log(response.data);
     return response.data;
 }
+
+export const GetComments = async () => {
+
+    const response = await axios.get('https://www.tannersgallery.duckdns.org/api/Users/comments', header);
+    console.log(response.data);
+
+    return response.data;
+}
+
+export const PostComment = async (comment) => {
+    const response = await axios.get('https://www.tannersgallery.duckdns.org/api/Users/comments', {...comment}, header);
+    console.log(response.data);
+
+    return response.data;
+}

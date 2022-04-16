@@ -10,8 +10,6 @@ import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap/dist/js/bootstrap.js'
 import Secure from './Components/Secure';
 import LogoutPage from './Components/LogoutPage';
-import { AuthProvider } from 'react-oidc-context';
-import { UserManager } from 'oidc-client-ts';
 import { MsalProvider } from '@azure/msal-react';
 import { PublicClientApplication } from "@azure/msal-browser"
 import { Provider } from 'react-redux';

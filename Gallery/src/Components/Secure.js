@@ -28,22 +28,23 @@ const Secure = () => {
         {
             navigate("/login")
         }
+
     },[navigate, token])
 
     const content = (token !== null 
         ? (
         <div>
-            <div>
-                {file !== undefined ? (<img width="250" height="250" className='img-fluid' alt="profile" src={`https://wwww.tannersgallery.duckdns.org/Images/ProfilePictures/${file.Name}_ProfileImage.${file.Extension}`} />) : <></>}
+            <div className="my-3">
+                {file !== undefined ? (<img width="250" height="250" className='img-fluid' alt="profile" src={`https://www.tannersgallery.duckdns.org/Images/ProfilePictures/${file.name}_ProfileImage.${file.extension}`} />) : <></>}
             </div>
-            <h1>Welcome {token.idTokenClaims.name} </h1>
+            <h1 className="my-3">Welcome {token.idTokenClaims.name} </h1>
             <form onSubmit={uploadImageHandler}>
                 <label className="form-label">Input Profile Image:</label>
                 <input type="file" className='form-control' onChange={(e) => setProfileImage(e.target.files[0])} />
                 <button type="submit" className='btn btn-primary' >Upload Image</button>
             </form>
 
-            <button className="btn btn-primary" onClick={() => navigate("/logout")}>Logout</button>
+            <button className="btn btn-primary my-3" onClick={() => navigate("/logout")}>Logout</button>
         </div>
         )
         : <></>            
@@ -53,9 +54,10 @@ const Secure = () => {
         <div>
             <div className="App App-header">
                 {content}
-            </div>
-            <div className="container">
-                
+
+                <div className="py-5">
+                    <button style={{color: 'white'}} className="btn btn-link btn-lg" onClick={() => navigate("/")} >Back to Home</button>
+                </div>
             </div>
         </div>
         
