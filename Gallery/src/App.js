@@ -21,9 +21,8 @@ function App() {
         setComments(newComments)
       }
     }
-
     fetchComments();
-  },[comments])
+  },[])
 
   const CommentHandler = async (e) => {
     e.preventDefault();
