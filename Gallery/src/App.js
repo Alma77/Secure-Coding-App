@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import { useNavigate } from 'react-router-dom';
-import { GetComments } from './Services/APIService'
+import { GetComments } from './Services/APIService';
 import { PostComment } from './Services/APIService';
 import { useState, useEffect } from 'react';
 import './App.css';

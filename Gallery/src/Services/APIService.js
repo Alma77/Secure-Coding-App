@@ -64,7 +64,8 @@ export const GetComments = async () => {
 }
 
 export const PostComment = async (comment) => {
-    const response = await axios.get('https://www.tannersgallery.duckdns.org/api/Users/comments', {...comment}, header);
+
+    const response = await axios.post('https://www.tannersgallery.duckdns.org/api/Users/comments', {...comment}, header);
     console.log(response.data);
 
     return response.data;
