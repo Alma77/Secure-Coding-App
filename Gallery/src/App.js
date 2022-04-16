@@ -7,7 +7,7 @@ import './App.css';
 
 function App() {
 
-  const token = window.localStorage.getItem("token");
+  const token = JSON.parse(window.localStorage.getItem("token"));
   const navigate = useNavigate();
   const [comments, setComments] = useState();
   const [newComment, setNewComment] = useState();
@@ -22,14 +22,14 @@ function App() {
       }
     }
     fetchComments();
-  },[comments])
+  },[])
 
   const CommentHandler = async (e) => {
     e.preventDefault();
 
     const comment = {
       content: newComment,
-      username: token !== undefined ? token.idTokenClaims.name : "Anonymous"
+      username: token !== null ? token.idTokenClaims.name : "Anonymous",
     }
 
     await PostComment(comment);
