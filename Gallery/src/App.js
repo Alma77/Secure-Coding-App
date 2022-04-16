@@ -16,7 +16,10 @@ function App() {
     const fetchComments = async () => {
       const comments = await GetComments();
 
-      setComments(comments)
+      if(comments !== null)
+      {
+        setComments(comments)
+      }
     }
 
     fetchComments();
