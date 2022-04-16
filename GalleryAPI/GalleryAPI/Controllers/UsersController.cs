@@ -230,13 +230,13 @@ namespace GalleryAPI.Controllers
             newUser.Password = hashed;
             newUser.Salt = Convert.ToBase64String(salt);*/
         }
-        [HttpGet("Comments")]
+        [HttpGet("comments")]
         public async Task<IEnumerable<CommentDTO>> GetComments()
         {
             return await _context.Comments.ToListAsync();
         }
 
-        [HttpPost("Comments")]
+        [HttpPost("comments")]
         public async Task<IActionResult> PostComment([FromBody] CommentDTO comment)
         {
             try
