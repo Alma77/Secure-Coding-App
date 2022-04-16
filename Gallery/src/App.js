@@ -22,14 +22,14 @@ function App() {
       }
     }
     fetchComments();
-  },[])
+  },[comments])
 
   const CommentHandler = async (e) => {
     e.preventDefault();
 
     const comment = {
       content: newComment,
-      username: token !== undefined ? token.tokenIdClaims.name : "Anonymous"
+      username: token !== undefined ? token.idTokenClaims.name : "Anonymous"
     }
 
     await PostComment(comment);
