@@ -11,6 +11,7 @@ function App() {
   const navigate = useNavigate();
   const [comments, setComments] = useState();
   const [newComment, setNewComment] = useState();
+  const [newPost, setNewPost] = useState();
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -22,7 +23,7 @@ function App() {
       }
     }
     fetchComments();
-  },[])
+  },[newPost])
 
   const CommentHandler = async (e) => {
     e.preventDefault();
@@ -32,7 +33,9 @@ function App() {
       username: token !== null ? token.idTokenClaims.name : "Anonymous",
     }
 
-    await PostComment(comment);
+    const post = await PostComment(comment);
+
+    setNewPost(post);
   }
 
 
