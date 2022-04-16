@@ -14,11 +14,11 @@ function App() {
 
   useEffect(() => {
     const fetchComments = async () => {
-      const comments = await GetComments();
+      const newComments = await GetComments();
 
-      if(comments !== null)
+      if(newComments !== null)
       {
-        setComments(comments)
+        setComments(newComments)
       }
     }
 
